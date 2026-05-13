@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lodgic - Open-Source AI Airbnb Search and Stay Ranking</title>
+    <meta name="description" content="Lodgic is an open-source AI Airbnb search tool for natural-language stay ranking with evidence, gaps, and booking cautions.">
+    <meta name="keywords" content="AI Airbnb search, semantic Airbnb search, open source travel search, Lodgic, airbnb scraper, Airbnb 个性化搜索, AI 房源筛选">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --bg-color: #0f172a;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin: 20px 0 40px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .search-mock {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .input-mock {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: left;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        button {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 40px;
+            border-radius: 24px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .modal-content h2 { margin-top: 0; }
+        .modal-content p { color: #94a3b8; line-height: 1.6; }
+        .github-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #a855f7;
+            text-decoration: none;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="en-content" style="display: none;">
+            <h1>Lodgic</h1>
+            <p class="subtitle">Explainable AI ranking for better Airbnb shortlists.</p>
+            <div class="glass-card">
+                <div class="search-mock" onclick="showModal()">
+                    <div class="input-mock">Where to? (Leatherhead, UK)</div>
+                    <div class="input-mock">Describe your vibe...</div>
+                    <button>Search</button>
+                </div>
+                <p style="font-size: 0.9rem; color: #64748b;">(Interactive UI Demo Only)</p>
+            </div>
+        </div>
+
+        <div id="zh-content" style="display: none;">
+            <h1>Lodgic</h1>
+            <p class="subtitle">开源 AI 房源排序工具，把模糊偏好变成可解释的候选清单。</p>
+            <div class="glass-card">
+                <div class="search-mock" onclick="showModal()">
+                    <div class="input-mock">目的地？ (Leatherhead, UK)</div>
+                    <div class="input-mock">描述你想要的氛围...</div>
+                    <button>搜索</button>
+                </div>
+                <p style="font-size: 0.9rem; color: #64748b;">(仅为界面演示)</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="demoModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title"></h2>
+            <p id="modal-text"></p>
+            <a href="https://github.com/Oililyuk/airbnbsearch" class="github-link">Go to GitHub / 移步 GitHub →</a>
+            <br><br>
+            <button onclick="hideModal()">Close / 关闭</button>
+        </div>
+    </div>
+
+    <script>
+        const isZh = navigator.language.startsWith('zh');
+        
+        if (isZh) {
+            document.getElementById('zh-content').style.display = 'block';
+        } else {
+            document.getElementById('en-content').style.display = 'block';
+        }
+
+        function showModal() {
+            const title = isZh ? "界面演示提示" : "Interface Demo Only";
+            const text = isZh 
+                ? "这只是一个 UI 演示页面。请移步 GitHub 下载完整代码，并配置您的 Apify 和 OpenAI API 密钥以使用完整功能。"
+                : "This is just a UI demonstration. Please head over to GitHub to download the source code and configure your Apify/OpenAI API keys for full functionality.";
+            
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerText = text;
+            document.getElementById('demoModal').style.display = 'flex';
+        }
+
+        function hideModal() {
+            document.getElementById('demoModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
