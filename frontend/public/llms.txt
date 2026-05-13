@@ -1,0 +1,16 @@
+# Lodgic
+
+Lodgic is an open-source AI Airbnb search and stay-ranking tool. It helps travelers describe lodging preferences in natural language and receive explainable listing rankings.
+
+## Core Use Case
+
+Users enter requests such as "authentic farm stay with sheep nearby, quiet, good Wi-Fi, and not a central city flat." Lodgic ranks Airbnb listings by match score, evidence, missing requirements, and booking cautions.
+
+## Links
+
+- Repository: https://github.com/Oililyuk/airbnbsearch
+- App: https://oililyuk.github.io/airbnbsearch/
+
+## Keywords
+
+AI Airbnb search, semantic Airbnb search, open-source travel search, explainable lodging recommendations, personalized stay ranking, 个性化 Airbnb 搜索, AI 房源筛选.
